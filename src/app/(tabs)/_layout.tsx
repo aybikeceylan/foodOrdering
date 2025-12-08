@@ -32,6 +32,7 @@ export default function TabLayout() {
         name="menu"
         options={{
           headerShown: false,
+
           title: "Menu",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="cutlery" color={color} />

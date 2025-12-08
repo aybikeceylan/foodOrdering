@@ -22,41 +22,58 @@ export const unstable_settings = {
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
+//! otomatik kapanmayı engeller arkada sayfa oluşturulurken yüklenirken
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  //! fontlar yüklenirkenki durumları kontrol eder
   const [loaded, error] = useFonts({
     SpaceMono: require("../../assets/fonts/SpaceMono-Regular.ttf"),
     ...FontAwesome.font,
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
+  //! hata oluşursa hata fırlatır
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
+  //! fontlar yüklenirkenki durumları kontrol eder
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
 
+  //! fontlar yüklenmediyse null döner
   if (!loaded) {
     return null;
   }
 
+  //! fontlar yüklenmişse RootLayoutNav döner
   return <RootLayoutNav />;
 }
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
-
+  //! root layout
   return (
+    //! tema değiştirir
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
       </Stack>
     </ThemeProvider>
   );
 }
+//! her zaman ilk çalışır fontlar yüklene kadar bekler
+//!assetleri önceden yükleyebilir
+//!kullanıcı tokenlerını kontrole eder
+//!ilgili wrapperlar burada sarmalalnır store vb
+//! notification a bağlanacaksa usffectle kontrol edilir app js gibi davranır
+//! kamera izinlerini kontrol eder
+//!google analytics bağlanacaksa usffectle kontrol edilir app js gibi davranır
+//!crash reportlarını kontrol eder
+//!deeplinking
