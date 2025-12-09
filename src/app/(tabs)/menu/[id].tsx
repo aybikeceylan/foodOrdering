@@ -1,6 +1,8 @@
 import Button from "@/components/Button";
 import Colors from "@/constants/Colors";
 import products from "@/data/products";
+import { useCart } from "@/providers/CartProvider";
+import { Product } from "@/types/Products";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -10,6 +12,7 @@ export default function ProductDetailsScreen() {
   const product = products.find((product) => product.id === Number(id));
   const sizes = ["S", "M", "L", "XL"];
   const [selectedSize, setSelectedSize] = useState<string>("S");
+  const { addToCart } = useCart();
   if (!product) {
     return <Text>Product not found</Text>;
   }
@@ -49,7 +52,9 @@ export default function ProductDetailsScreen() {
         <Text style={styles.price}>{product?.price}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Button onPress={() => {}}>Add to Cart</Button>
+        <Button onPress={() => addToCart(product as Product, selectedSize)}>
+          Add to Cart
+        </Button>
       </View>
     </View>
   );
